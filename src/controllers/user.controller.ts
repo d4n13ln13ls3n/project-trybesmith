@@ -2,12 +2,16 @@ import { Request, Response } from 'express';
 
 import { CreateUserRequestBody } from '../interfaces';
 import UserService from '../services/user.service';
+import LoginService from '../services/login.service';
 
 class UserController {
   private userService: UserService;
 
+  private loginService: LoginService;
+
   constructor() {
     this.userService = new UserService();
+    this.loginService = new LoginService();
   }
 
   public getAll = async (req: Request, res: Response) => {
@@ -25,7 +29,10 @@ class UserController {
     const user = await this.userService.create(
       req.body as CreateUserRequestBody,
     );
-    return res.status(200).json(user);
+    console.log('user inside controller:', user);
+    const token = LoginService.createAccessToken(user);
+    console.log('token:', token);
+    return res.status(201).json({ token });
   };
 
   public update = async (req: Request, res: Response) => {

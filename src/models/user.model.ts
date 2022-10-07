@@ -9,14 +9,14 @@ export default class UserModel {
 
   public async getAll(): Promise<User[]> {
     const result = await this.connection
-      .execute('SELECT * FROM Users');
+      .execute('SELECT * FROM Trybesmith.Users');
     const [rows] = result;
     return rows as User[];
   }
 
   public async getById(id: number): Promise<User | null> {
     const result = await this.connection
-      .execute('SELECT * FROM Users WHERE id=?', [id]);
+      .execute('SELECT * FROM Trybesmith.Users WHERE id=?', [id]);
     const [rows] = result;
     const [user] = rows as User[];
     return user || null;
@@ -24,7 +24,7 @@ export default class UserModel {
 
   public async getByUsername(username: string): Promise<User | null> {
     const result = await this.connection
-      .execute('SELECT * FROM Users WHERE username = ?', [username]);
+      .execute('SELECT * FROM Trybesmith.Users WHERE username = ?', [username]);
     const [rows] = result;
     const [user] = rows as User[];
 
@@ -34,7 +34,7 @@ export default class UserModel {
   public async create(user: CreateUserRequestBody): Promise<User> {
     const { username, classe, level, password } = user;
     const result = await this.connection.execute<ResultSetHeader>(
-      'INSERT INTO Users (username, classe, level, password) VALUES (?, ?, ?)',
+      'INSERT INTO Trybesmith.Users (username, classe, level, password) VALUES (?, ?, ?, ?)',
       [username, classe, level, password],
     );
 
@@ -46,7 +46,7 @@ export default class UserModel {
   public async update(id: number, user: CreateUserRequestBody): Promise<User> {
     const { username, classe, level, password } = user;
     await this.connection.execute(
-      'UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?',
+      'UPDATE Trybesmith.Users SET name = ?, email = ?, password = ? WHERE id = ?',
       [username, classe, level, password, id],
     );
 
@@ -59,7 +59,7 @@ export default class UserModel {
     if (!userToBeDeleted) return null;
 
     await this.connection.execute(
-      'DELETE FROM Users WHERE id=?',
+      'DELETE FROM Trybesmith.Users WHERE id=?',
       [id],
     );
 
@@ -69,9 +69,9 @@ export default class UserModel {
   public async partialUpdate(id: Required<User>['id'], user: Partial<User>) {
     // const { title, price, author, isbn } = book;
     // await this.connection.execute(
-    //   'UPDATE users SET title=?, price=?, author=?, isbn=? WHERE id=?',
+    //   'UPDATE Trybesmith.Users SET title=?, price=?, author=?, isbn=? WHERE id=?',
     //   [title, price, author, isbn, id]
-    const query = 'UPDATE users SET';
+    const query = 'UPDATE Trybesmith.Users SET';
     const queryUpdate = Object.keys(user).map((field) => `${field}=?`).join(', ');
     const queryValues = Object.values(user);
     console.log('query update:', queryUpdate);
