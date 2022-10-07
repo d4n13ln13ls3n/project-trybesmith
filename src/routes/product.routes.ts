@@ -10,7 +10,7 @@ const productController = new ProductController();
 
 router.post('/', productController.create);
 
-router.get('/', accessTokenValidatorMiddleware, productController.getAll);
+router.get('/', productController.getAll);
 
 router.get('/:id', accessTokenValidatorMiddleware, productController.getById);
 
