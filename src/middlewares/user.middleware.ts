@@ -34,7 +34,7 @@ function levelAndPasswordExist(
   req: Request, 
   res: Response,
 ): Response | null {
-  if (!level) return res.status(400).json({ message: nullLevel });
+  if (level === null || level === undefined) return res.status(400).json({ message: nullLevel });
 
   if (!password) return res.status(400).json({ message: nullPassword });
 
