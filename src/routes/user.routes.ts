@@ -11,7 +11,7 @@ const router = Router();
 const userController = new UserController();
 // const loginController = new LoginController();
 
-router.post('/', userController.create);
+router.post('/', userMiddleware, userController.create);
 
 router.get('/', accessTokenValidatorMiddleware, userController.getAll);
 
