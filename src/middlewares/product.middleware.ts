@@ -1,12 +1,6 @@
-// ADAPT TO PRODUCT
-
 import { NextFunction, Request, Response } from 'express';
 
 import { CreateProductRequestBody } from '../interfaces';
-
-// import BadRequestHttpError from '../errors/httpErrors/BadRequest';
-
-// import UnprocessableEntity from '../errors/httpErrors/UnprocessableEntity';
 
 const nameLength = '"name" length must be at least 3 characters long';
 const amountLength = '"amount" length must be at least 3 characters long';
@@ -35,7 +29,6 @@ function validateData(name: string, amount: string, req: Request, res: Response)
 
   return null;
 }
-
 
 function rightType(name: string, amount: string, req: Request, res: Response) {
   if (typeof name !== 'string') return res.status(422).json({ message: wrongTypeName });
