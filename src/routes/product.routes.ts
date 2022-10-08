@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
-import productMiddleware from '../middlewares/product.middleware';
+// import productMiddleware from '../middlewares/product.middleware';
+import validateBody from '../middlewares/product.middleware';
 import ProductController from '../controllers/product.controller';
 import accessTokenValidatorMiddleware from '../middlewares/access-token-validator.middleware';
 
@@ -8,7 +9,7 @@ const router = Router();
 
 const productController = new ProductController();
 
-router.post('/', productController.create);
+router.post('/', validateBody, productController.create);
 
 router.get('/', productController.getAll);
 
@@ -17,7 +18,7 @@ router.get('/:id', accessTokenValidatorMiddleware, productController.getById);
 router.put(
   '/:id',
   accessTokenValidatorMiddleware,
-  productMiddleware,
+  validateBody,
   productController.update,
 );
 

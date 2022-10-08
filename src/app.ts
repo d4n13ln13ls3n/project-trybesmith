@@ -1,6 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 
+// import productMiddleware from './middlewares/product.middleware';
 import errorHandlerMiddleware from './middlewares/error-handler.middleware';
 
 import LoginRouter from './routes/login.routes';

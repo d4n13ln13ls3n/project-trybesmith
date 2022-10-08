@@ -1,6 +1,6 @@
 import connection from '../models/connection';
 import ProductModel from '../models/product.model';
-import { CreateProductRequestBody } from '../interfaces';
+import { CreateProductRequestBody, ProductRequestBodyWithOrderId } from '../interfaces';
 import BadRequestHttpError from '../errors/httpErrors/BadRequest';
 import NotFoundHttpError from '../errors/httpErrors/NotFound';
 
@@ -40,7 +40,7 @@ class ProductService {
     return this.productModel.create(payload);
   }
 
-  public async update(id: number, product: CreateProductRequestBody) {
+  public async update(id: number, product: ProductRequestBodyWithOrderId) {
     await this.ensuresProductExist(id);
     return this.productModel.update(id, product);
   }

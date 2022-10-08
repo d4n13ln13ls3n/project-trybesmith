@@ -1,6 +1,11 @@
 import { Pool, ResultSetHeader } from 'mysql2/promise';
 
-import { CreateProductRequestBody, Product } from '../interfaces';
+import { 
+  CreateProductRequestBody, 
+  ProductRequestBodyWithOrderId, 
+  Product, 
+  ProductReturned,
+} from '../interfaces';
 
 export default class ProductModel {
   constructor(private connection: Pool) {
@@ -31,7 +36,7 @@ export default class ProductModel {
     return product || null;
   }
 
-  public async create(product: CreateProductRequestBody): Promise<Product> {
+  public async create(product: CreateProductRequestBody): Promise<ProductReturned> {
     const { name, amount } = product;
     const result = await this.connection.execute<ResultSetHeader>(
       'INSERT INTO Trybesmith.Products (name, amount) VALUES (?, ?)',
@@ -43,7 +48,7 @@ export default class ProductModel {
     return { id, ...product };
   }
 
-  public async update(id: number, product: CreateProductRequestBody): Promise<Product> {
+  public async update(id: number, product: ProductRequestBodyWithOrderId): Promise<Product> {
     const { name, amount, orderId } = product;
     await this.connection.execute(
       'UPDATE Trybesmith.Products SET name = ?, amount = ?, orderId = ? WHERE id = ?',

@@ -21,7 +21,18 @@ export interface User {
 export interface CreateProductRequestBody {
   name: string;
   amount: string; // NUMBER?
-  orderId: number; // CONFERIR SE É NECESSÁRIO NO REQUEST BODY
+}
+
+export interface ProductReturned {
+  id: number;
+  name: string;
+  amount: string;
+}
+
+export interface ProductRequestBodyWithOrderId {
+  name: string;
+  amount: string;
+  orderId: number;
 }
 
 export interface Product {

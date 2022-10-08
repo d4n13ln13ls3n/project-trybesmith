@@ -2,46 +2,55 @@
 
 import { NextFunction, Request, Response } from 'express';
 
-import { CreateUserRequestBody } from '../interfaces';
+import { CreateProductRequestBody } from '../interfaces';
 
-import BadRequestHttpError from '../errors/httpErrors/BadRequest';
+// import BadRequestHttpError from '../errors/httpErrors/BadRequest';
 
-function validateData(username: string, classe: string, level: number, password: string) {
-  if (password.length < 6 || password.length > 12) {
-    const message = 'The field "password" must have between 6 and 12 characters';
-    throw new BadRequestHttpError(message);
-  }
+// import UnprocessableEntity from '../errors/httpErrors/UnprocessableEntity';
 
-  if (username.length < 3) {
-    const message = 'The field "name" must have at least 3 characters';
-    throw new BadRequestHttpError(message);
-  }
+const nameLength = '"name" length must be at least 3 characters long';
+const amountLength = '"amount" length must be at least 3 characters long';
+const nullName = '"name" is required';
+const nullAmount = '"amount" is required';
+const wrongTypeName = '"name" must be a string';
+const wrongTypeAmount = '"amount" must be a string';
 
-  return null;
-}
-
-function fieldsExist(username: string, classe: string, level: number, password: string) {
-  if (!username || !classe || !level || !password) {
-    const message = 'The fields "username", "classe", "level" and "password" are required';
-    throw new BadRequestHttpError(message);
-  }
-  return null;
-}
-
-export default function validateBody(
-  req: Request,
+function fieldsExist(
+  name: string | null, 
+  amount: string | null, 
+  req: Request, 
   res: Response,
-  next: NextFunction,
-) {
-  const { username, classe, level, password } = req.body as CreateUserRequestBody;
-  const fieldsError = fieldsExist(username, classe, level, password);
-  const message = 'The fields "username", "classe", "level" and "password" are required';
+): Response | null {
+  if (!name) return res.status(400).json({ message: nullName });
+  
+  if (!amount) return res.status(400).json({ message: nullAmount });
 
-  if (fieldsError) throw new BadRequestHttpError(message);
+  return null;
+}
 
-  const error = validateData(username, classe, level, password);
+function validateData(name: string, amount: string, req: Request, res: Response) {
+  if (name.length < 3) return res.status(422).json({ message: nameLength });
+  
+  if (amount.length < 3) return res.status(422).json({ message: amountLength });
 
-  if (error) throw new BadRequestHttpError('A field or more are not filled out correctly'); // REVISAR MENSAGEM
+  return null;
+}
 
+
+function rightType(name: string, amount: string, req: Request, res: Response) {
+  if (typeof name !== 'string') return res.status(422).json({ message: wrongTypeName });
+  
+  if (typeof amount !== 'string') return res.status(422).json({ message: wrongTypeAmount });
+
+  return null;
+}
+
+export default function validateBody(req: Request, res: Response, next: NextFunction) {
+  const { name, amount } = req.body as CreateProductRequestBody;
+  
+  fieldsExist(name, amount, req, res);
+  validateData(name, amount, req, res);
+  rightType(name, amount, req, res);
+  
   next();
 }

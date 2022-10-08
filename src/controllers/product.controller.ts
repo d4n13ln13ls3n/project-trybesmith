@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { CreateProductRequestBody } from '../interfaces';
+import { CreateProductRequestBody, ProductRequestBodyWithOrderId } from '../interfaces';
 import ProductService from '../services/product.service';
 
 class ProductController {
@@ -32,7 +32,7 @@ class ProductController {
     const id = Number(req.params.id);
     const product = await this.productService.update(
       id,
-      req.body as CreateProductRequestBody,
+      req.body as ProductRequestBodyWithOrderId,
     );
     res.status(200).json(product);
   };
