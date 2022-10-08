@@ -1,5 +1,3 @@
-// ADAPT TO PRODUCT
-
 import { NextFunction, Request, Response } from 'express';
 
 import { CreateUserRequestBody } from '../interfaces';

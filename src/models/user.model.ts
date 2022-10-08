@@ -28,7 +28,19 @@ export default class UserModel {
     const [rows] = result;
     const [user] = rows as User[];
 
-    return user || null;
+    return user;
+  }
+
+  public async getByUsernameAndPassword(username: string, password: string): Promise<User | null> {
+    const result = await this.connection
+      .execute(
+        'SELECT * FROM Trybesmith.Users WHERE username = ? AND password = ?', 
+        [username, password],
+      );
+    const [rows] = result;
+    const [user] = rows as User[];
+
+    return user;
   }
 
   public async create(user: CreateUserRequestBody): Promise<User> {
