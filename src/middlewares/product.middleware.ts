@@ -16,6 +16,7 @@ function fieldsExist(
   res: Response,
 ): Response | null {
   if (!name) return res.status(400).json({ message: nullName });
+  // throw new BadRequest(message);
   
   if (!amount) return res.status(400).json({ message: nullAmount });
 
