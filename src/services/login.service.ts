@@ -2,11 +2,12 @@ import jwt from 'jsonwebtoken';
 import env from '../config/env';
 
 import UnauthorizedHttpError from '../errors/httpErrors/UnauthorizedHttpError';
-import { AuthenticationCredentials, User } from '../interfaces';
+import { AuthenticationCredentials, User, JWTPayload } from '../interfaces';
 import connection from '../models/connection';
 import UserModel from '../models/user.model';
 
 const INVALID_FIELDS = 'Invalid username or password';
+
 export default class LoginService {
   private userModel: UserModel;
   
@@ -30,10 +31,11 @@ export default class LoginService {
   static createAccessToken(user: User) {
     // const userToAuthenticate = await this.userModel.getByUsername(user.username);
     // console.log('userToAuthenticate:', userToAuthenticate);
-    const { username } = user;
-    const token = jwt.sign({ username }, env.jwtSecret, { expiresIn: '1w' });
+    const { username, id } = user;
+    const token = jwt.sign({ username, id }, env.jwtSecret, { expiresIn: '1w' });
     console.log('token inside login service:', token);
     console.log('username:', username);
+    console.log('user:', user);
     return token;
   }
 
@@ -46,7 +48,9 @@ export default class LoginService {
     }
 
     try {
-      jwt.verify(token, env.jwtSecret);
+      const decoded = jwt.verify(token, env.jwtSecret);
+      console.log('decoded token:', decoded);
+      return decoded as JWTPayload;
     } catch (err) {
       throw new UnauthorizedHttpError(INVALID_FIELDS);
     }

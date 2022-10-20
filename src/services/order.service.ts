@@ -1,14 +1,18 @@
 import connection from '../models/connection';
 import OrderModel from '../models/order.model';
-// import { FullOrder, NewOrderFulfilled, NewOrder } from '../interfaces';
-// import BadRequestHttpError from '../errors/httpErrors/BadRequest';
+import { NewOrderPayload } from '../interfaces';
+import BadRequestHttpError from '../errors/httpErrors/BadRequest';
 import NotFoundHttpError from '../errors/httpErrors/NotFound';
+import ProductModel from '../models/product.model';
 
 class OrderService {
   public orderModel: OrderModel;
 
+  public productModel: ProductModel;
+
   constructor() {
     this.orderModel = new OrderModel(connection);
+    this.productModel = new ProductModel(connection);
   }
 
   private async ensuresOrderExist(id: number) {
@@ -30,15 +34,21 @@ class OrderService {
     return this.ensuresOrderExist(id);
   }
 
-  // public async create(payload: NewOrder) {
-  //   const orderExists = await this.orderModel.getById(payload.id);
+  public async create(payload: NewOrderPayload) {
+    const { productsIds } = payload;
+    
+    const products = await Promise.all(
+      productsIds.map(async (productId) => this.productModel.getById(productId)),
+    );
 
-  //   if (orderExists) {
-  //     throw new BadRequestHttpError('Order already exists');
-  //   }
+    const invalidProductId = products.some((product) => !product);
 
-  //   return this.orderModel.create(payload);
-  // }
+    if (invalidProductId) {
+      throw new BadRequestHttpError('product does not exist');
+    }
+
+    return this.orderModel.create(payload);
+  }
 
   public async remove(id: number) {
     await this.ensuresOrderExist(id);

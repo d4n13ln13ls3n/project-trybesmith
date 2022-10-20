@@ -11,6 +11,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   if (!token) {
     throw new UnauthorizedHttpError('Invalid token');
   }
-  LoginService.validateAccessToken(token);
+  const decodedUser = LoginService.validateAccessToken(token);
+  req.user = decodedUser;
   next();
 };

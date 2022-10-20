@@ -1,3 +1,5 @@
+// import { Request } from 'express';
+
 export interface AuthenticationCredentials {
   username: string;
   password: string;
@@ -47,17 +49,29 @@ export interface OrderForRequests {
   userId: number;
 }
 
-export interface FullOrder {
+export interface OrderDTO {
   id: number;
   userId: number;
   productsIds: number[];
 }
 
-export interface NewOrder {
+export interface NewOrderPayload {
+  productsIds: number[];
+  userId: number;
+}
+
+export interface NewOrderRequestBody {
   productsIds: number[];
 }
 
-export interface NewOrderFulfilled {
-  userId: number;
-  productsIds: number[];
+export interface JWTPayload {
+  id: number;
+  username: string;
 }
+
+// export interface PrivateRequest extends Request {
+//   user: {
+//     id: number;
+//     username: string;
+//   }
+// }

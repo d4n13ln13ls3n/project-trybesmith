@@ -2,6 +2,8 @@ import { Router } from 'express';
 
 import OrderController from '../controllers/order.controller';
 
+import accessTokenValidatorMiddleware from '../middlewares/access-token-validator.middleware';
+
 const router = Router();
 
 const orderController = new OrderController();
@@ -9,7 +11,7 @@ const orderController = new OrderController();
 
 router.get('/', orderController.getAll);
 
-// router.post('/', orderController.create);
+router.post('/', accessTokenValidatorMiddleware, orderController.create);
 
 router.delete('/:id', orderController.remove);
 
