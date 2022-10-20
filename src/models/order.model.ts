@@ -57,10 +57,10 @@ export default class OrderModel {
     // );
     await Promise.all(
       productsIds.map(async (productId) =>
-      conn.execute(
-        'UPDATE Trybesmith.Products SET orderId = ? WHERE id = ?',
-        [id, productId]
-      ))
+        conn.execute(
+          'UPDATE Trybesmith.Products SET orderId = ? WHERE id = ?',
+          [id, productId],
+        )),
     );
 
     await conn.commit();
