@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User } from '../interfaces';
+import { AuthenticationCredentials } from '../interfaces';
 import LoginService from '../services/login.service';
 
 export default class AuthenticationController {
@@ -10,8 +10,9 @@ export default class AuthenticationController {
   }
 
   public login = async (req: Request, res: Response) => {
-    const token = await LoginService.createAccessToken(
-      req.body as User,
+    const { username, password } = req.body;
+    const token = await this.loginService.login(
+      { username, password } as AuthenticationCredentials,
     );
 
     return res.status(200).send({ token });

@@ -6,7 +6,7 @@ import { AuthenticationCredentials, User, JWTPayload } from '../interfaces';
 import connection from '../models/connection';
 import UserModel from '../models/user.model';
 
-const INVALID_FIELDS = 'Invalid username or password';
+const INVALID_FIELDS = 'Invalid token';
 
 export default class LoginService {
   private userModel: UserModel;
@@ -15,19 +15,6 @@ export default class LoginService {
     this.userModel = new UserModel(connection);
   }
   
-  public async login({ username, password }: AuthenticationCredentials) {
-    const data = await this.userModel.getByUsername(username);
-
-    if (data === null) {
-      throw new UnauthorizedHttpError(INVALID_FIELDS);
-    }
-
-    if (data.password !== password) {
-      throw new UnauthorizedHttpError(INVALID_FIELDS);
-    }
-    return jwt.sign({ username }, env.jwtSecret, { expiresIn: '1w' });   
-  }
-
   static createAccessToken(user: User) {
     // const userToAuthenticate = await this.userModel.getByUsername(user.username);
     // console.log('userToAuthenticate:', userToAuthenticate);
@@ -36,6 +23,21 @@ export default class LoginService {
     console.log('token inside login service:', token);
     console.log('username:', username);
     console.log('user:', user);
+    return token;
+  }
+
+  public async login({ username, password }: AuthenticationCredentials) {
+    const user = await this.userModel.getByUsername(username);
+
+    if (user === null) {
+      throw new UnauthorizedHttpError(INVALID_FIELDS);
+    }
+
+    if (user.password !== password) {
+      throw new UnauthorizedHttpError(INVALID_FIELDS);
+    }
+    // return jwt.sign({ username }, env.jwtSecret, { expiresIn: '1w' });   
+    const token = LoginService.createAccessToken(user);
     return token;
   }
 

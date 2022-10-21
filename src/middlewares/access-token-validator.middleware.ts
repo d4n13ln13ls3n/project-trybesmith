@@ -8,10 +8,12 @@ import UnauthorizedHttpError from '../errors/httpErrors/UnauthorizedHttpError';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   const token = req.header('Authorization');
+  console.log('token inside access-token-validator:', token);
   if (!token) {
-    throw new UnauthorizedHttpError('Invalid token');
+    throw new UnauthorizedHttpError('Token not found');
   }
   const decodedUser = LoginService.validateAccessToken(token);
+  console.log('decodedUser:', decodedUser);
   req.user = decodedUser;
   next();
 };

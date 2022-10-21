@@ -4,6 +4,8 @@ import OrderController from '../controllers/order.controller';
 
 import accessTokenValidatorMiddleware from '../middlewares/access-token-validator.middleware';
 
+import validateBody from '../middlewares/order.middleware';
+
 const router = Router();
 
 const orderController = new OrderController();
@@ -11,7 +13,12 @@ const orderController = new OrderController();
 
 router.get('/', orderController.getAll);
 
-router.post('/', accessTokenValidatorMiddleware, orderController.create);
+router.post(
+  '/', 
+  accessTokenValidatorMiddleware, 
+  validateBody, 
+  orderController.create,
+);
 
 router.delete('/:id', orderController.remove);
 

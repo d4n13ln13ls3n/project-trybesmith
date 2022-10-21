@@ -11,9 +11,9 @@ import connection from '../models/connection';
 const userModel = new UserModel(connection);
 
 const validateBody: RequestHandler = async (req, res, next) => {
-  console.log('entered login.middleware');
+  // console.log('entered login.middleware');
   const { username, password } = req.body;
-  console.log('username and password:', username, password);
+  // console.log('username and password:', username, password);
   if (!username) {
     console.log('entered first if');
     return res.status(400).json({ message: '"username" is required' });
@@ -27,7 +27,7 @@ const validateBody: RequestHandler = async (req, res, next) => {
   }
   
   const existingUsername = await userModel.getByUsernameAndPassword(username, password);
-  console.log('existing username:', existingUsername);
+  // console.log('existing username:', existingUsername);
   if (!existingUsername) {
     // throw new NotFoundHttpError('Username or password invalid');
     return res.status(401).json({ message: 'Username or password invalid' });
