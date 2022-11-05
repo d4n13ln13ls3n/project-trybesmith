@@ -7,7 +7,16 @@ O objetivo deste projeto foi criar uma loja de itens medievais, no formato de um
 A aplicação foi desenvolvida com <strong>Node.js e TypeScript</strong>, utilizando a <strong>arquitetura MSC</strong> (Model, Service, Controller) e <strong>MySQL</strong> para realizar o CRUD (Create, Read, Update and Delete) dos itens.
 Para fazer validações de entrada, foi utilizada a biblioteca <strong>Joi</strong> e para a gerar e autenticar token foi utilizado o JSON Web Token - <strong>JWT</strong>.
 
-## 🛸 Principais tecnologias utilizadas: 
+ <details>
+ <summary> 🇬🇧 English here</summary>
+ ## ✏ Information about the project
+ The goal of this back-end project was to create a medieval items store, in an API format.
+ </br>
+ The application was developed with <strong>Node.js and Typescript</strong>, using <strong>MSC architecture</strong> (Model, Service and Controller) and <strong>MySQL</strong> to perform CRUD (Create, Read, Update and Delete) operations.
+ To validate data input, the <strong>Joi</strong> library was used and to generate and authenticate tokens JSON Web Token - <strong>JWT</strong>.
+ </details>
+ 
+## 🛸 Principais tecnologias utilizadas / Main technologies used: 
 - [Docker](https://www.docker.com/);
 - [Express.js](https://expressjs.com/);
 - [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript);
@@ -82,4 +91,69 @@ npm install
  </details>
  
  ---
-© Desenvolvido por [Daniel Yabu](https://www.linkedin.com/in/daniel-yabu/) 
+ 
+ ## ⚙ How to run the project on your computer
+
+<strong>1. Run git clone and access the folder:</strong>
+- Don't forget to clone the repository in the intended folder on your computer!
+ ```
+ git clone git@github.com:d4n13ln13ls3n/project-trybesmith.git
+ cd project-trybesmith
+ ```
+
+<strong>2. Choose how to run the application: Docker vs Locally</strong>
+
+<details>
+    <summary><strong>🐳 Running with Docker</strong></summary>
+    </br>
+
+  **:warning: Your docker-compose must be in the version 1.29 or higher. [Read more at](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04-pt) or [in the documentation](https://docs.docker.com/compose/install/) on how to install it. In the first article, you can replace `1.26.0` with `1.29.2`.**
+
+ 👉 <strong> 2.1 Run the services `node` and `db` with the command : </strong>
+  ```
+  docker-compose up -d --build
+  ```
+
+  :warning: Don't forget to stop any application running locally in the default port (`3306`), be it Docker or mySQL, or adapt it, in case you want to run the application in containers;
+
+- These services will start a container called `trybesmith` and another called `trybesmith_db`;
+
+- From now on, you ca run the `trybesmith` container via CLI or open it on VS Code;
+
+👉 <strong>2.2 Use the command:</strong>
+  ```
+  docker exec -it trybesmith bash
+  ```
+
+- It will give you access to the container interactive terminal created by docker compose, which is running in the background.
+
+ 👉 <strong>2.3 Install the dependencies in the container with:</strong>
+  ```
+  npm install
+  npm run debug
+  ```
+
+  - **:warning: ** If you choose to use Docker, **ALL** commands available in `package.json` (npm start, npm test, npm run dev, ...) should be run **INSIDE** the container, that is, in the  terminal that appears after the above mentioned command `docker exec` is run. 
+
+  - ✨ **Hint:** The extension `Remote - Containers` (available at VS Code's recommended extensions section) is indicated so you can develop your application in a Docker container directly on VS Code, like you do with your local files.
+
+</details>
+
+<details>
+  <summary><strong> 💻 Locally</strong></summary> 
+</br>
+
+👉 <strong>2.1 Install the dependencies: </strong>
+```
+npm install
+```
+
+- **:warning: ** Don't forget to rename/configure the file `.env.example` so the local tests work properly.
+- **:warning: ** To run the project like this, you **must** have `Node.js` installed on your computer.
+- **:warning: ** `Node.js` and `NPM` versions to be used are: `"node": ">=16.0.0"` and `"npm": ">=7.0.0"`, as per the key `engines` in the file `package.json`. Ideally, Node.js should be used in the version `16.14`, in which this project was tested.
+
+  <br/>
+ </details>
+ 
+ ---
+© Desenvolvido por/ Developed by [Daniel Yabu](https://www.linkedin.com/in/daniel-yabu/) 
